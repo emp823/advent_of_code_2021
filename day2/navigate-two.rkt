@@ -31,7 +31,7 @@
 (define (move-forward n position)
   (struct-copy sub-position position
                [horiz (+ (sub-position-horiz position) n)]
-               [depth (* (sub-position-aim position) n)]))
+               [depth (+ (sub-position-depth position) (* (sub-position-aim position) n))]))
 
 (define (navigate)
   (for/fold ([p (sub-position 0 0 0)]
