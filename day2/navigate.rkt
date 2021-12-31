@@ -18,7 +18,7 @@
 (define fwd (sumValues (filterDir instructions 'forward)))
 (define down (sumValues (filterDir instructions 'down)))
 (define up (sumValues (filterDir instructions 'up)))
-  
+
 (define horiz fwd)
 (define depth (- down up))
 

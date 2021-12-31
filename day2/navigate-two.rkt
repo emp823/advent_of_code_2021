@@ -22,20 +22,20 @@
 
 (define (move-down n position)
   (struct-copy sub-position position
-               [aim (+ (sub-position-aim position) n)]))
+              [aim (+ (sub-position-aim position) n)]))
 
 (define (move-up n position)
   (struct-copy sub-position position
-               [aim (- (sub-position-aim position) n)]))
+              [aim (- (sub-position-aim position) n)]))
 
 (define (move-forward n position)
   (struct-copy sub-position position
-               [horiz (+ (sub-position-horiz position) n)]
-               [depth (+ (sub-position-depth position) (* (sub-position-aim position) n))]))
+              [horiz (+ (sub-position-horiz position) n)]
+              [depth (+ (sub-position-depth position) (* (sub-position-aim position) n))]))
 
 (define (navigate)
   (for/fold ([p (sub-position 0 0 0)]
-            #:result (* (sub-position-horiz p)
+             #:result (* (sub-position-horiz p)
                         (sub-position-depth p)))
             ([move (in-list instructions)])
     (match-move move p)))

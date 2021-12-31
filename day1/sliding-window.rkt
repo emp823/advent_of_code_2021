@@ -1,10 +1,10 @@
 #lang racket
 (define (countSlidingIncreases values)
   (if (>= 3 (length values))
-      0
-      (if (< (sumWindow values) (sumWindow (rest values)))
-          (+ 1 (countSlidingIncreases (rest values)))
-          (countSlidingIncreases (rest values)))))
+     0
+     (if (< (sumWindow values) (sumWindow (rest values)))
+        (+ 1 (countSlidingIncreases (rest values)))
+        (countSlidingIncreases (rest values)))))
 
 (define numbers
   (call-with-input-file "numbers.txt"
