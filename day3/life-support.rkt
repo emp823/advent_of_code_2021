@@ -1,16 +1,19 @@
 #lang racket
 
-(define binary-numbers
+(define binary-strings
   (call-with-input-file "binary.txt"
     (lambda (in)
       (for/list ([line (in-lines in)])
         (map string (string->list line))))))
 
+(define binary-numbers
+  (map (lambda (row) (map string->number row)) binary-strings))
+
 (define column-length
-  (length (first binary-numbers)))
+  (length (first binary-strings)))
 
 (define rows-length
-  (length binary-numbers))
+  (length binary-strings))
 
 (define mid-point
   (/ rows-length 2))
@@ -20,7 +23,7 @@
   (sort
    (map (lambda (line)
           (string->number (list-ref line index)))
-       binary-numbers)
+       binary-strings)
    <))
 
 ;;; columns, sorted
@@ -45,23 +48,30 @@
 (define least-common-bits
   (map least-common-bit columns))
 
+(define (filter-rows rows [acc 0])
+  (if (= 1 (length rows))
+     (first rows)
+     (filter-rows (filter (lambda (row)
+                            (equal? (list-ref row acc) (list-ref most-common-bits acc)))
+                         rows)
+                 (+ acc 1))))
+
 ;;; combine the most common bits to make a number, ex. 10011
 (define (combined-bit bits)
   (string->number
    (string-join
     (map ~a (map number->string bits)) "")))
 
+(define oxygen-row
+  (filter-rows binary-numbers))
+
+(define oxygen-bit
+  (combined-bit oxygen-row))
+
 (define (bin->dec n)
   (if (zero? n)
      n
      (+ (modulo n 10) (* 2 (bin->dec (quotient n 10))))))
 
-(define gamma-rate
-  (bin->dec (combined-bit most-common-bits)))
-
-(define epsilon-rate
-  (bin->dec (combined-bit least-common-bits)))
-
-(define power-consumption (* gamma-rate epsilon-rate))
-
-power-consumption
+(define oxygen-rating
+  (bin->dec oxygen-bit))
